@@ -1,3 +1,4 @@
+```mermaid
 sequenceDiagram
   actor Alice as Browser
   actor Bob as Server
