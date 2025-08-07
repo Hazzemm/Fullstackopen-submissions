@@ -1,1 +1,18 @@
-<pre><code>```mermaid sequenceDiagram actor Alice as Browser actor Bob as Server Note right of Alice: Add a New Note and Click Submit Button Alice ->> Bob: POST https://studies.cs.helsinki.fi/exampleapp/new_note Bob -->> Alice: Status Code: 302 Note left of Bob: Status Code: 302 Asks The Browser To Perform a New Get Request Alice ->> Bob: GET https://studies.cs.helsinki.fi/exampleapp/notes Bob -->> Alice: HTML Document Alice ->> Bob: GET https://studies.cs.helsinki.fi/exampleapp/main.css Bob -->> Alice: The CSS File Alice ->> Bob: GET https://studies.cs.helsinki.fi/exampleapp/main.js Bob -->> Alice: The JavaScript File Note right of Alice: The Browser Executes the JavaScript Code That Fetches The JSON From The Server Alice ->> Bob: GET https://studies.cs.helsinki.fi/exampleapp/data.json Bob -->> Alice: JSON File Note right of Alice: The Browser Executes The Callback Function That Renders The Notes ```</code></pre>
+sequenceDiagram
+  actor Alice as Browser
+  actor Bob as Server
+
+  Note right of Alice: Add a New Note and Click Submit Button
+  Alice ->> Bob: POST https://studies.cs.helsinki.fi/exampleapp/new_note
+  Bob -->> Alice: Status Code: 302
+  Note left of Bob: Status Code: 302 Asks The Browser To Perform a New Get Request
+  Alice ->> Bob: GET https://studies.cs.helsinki.fi/exampleapp/notes
+  Bob -->> Alice: HTML Document
+  Alice ->> Bob: GET https://studies.cs.helsinki.fi/exampleapp/main.css
+  Bob -->> Alice: The CSS File
+  Alice ->> Bob: GET https://studies.cs.helsinki.fi/exampleapp/main.js
+  Bob -->> Alice: The JavaScript File
+  Note right of Alice: The Browser Executes the JavaScript Code That Fetches The JSON From The Server
+  Alice ->> Bob: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+  Bob -->> Alice: JSON File
+  Note right of Alice: The Browser Executes The Callback Function That Renders The Notes
