@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import personService from './services/persons'
 import './index.css'
 
@@ -61,12 +60,15 @@ const Persons = ({ persons, handleDelete }) => (
     </tbody>
   </table>
 )
-const Message = ({ message }) => {
+const Message = ({ message, messageType }) => {
   if (message === null) {
     return null
   }
+  let className = 'notification'
+  if (messageType === 'error') className += ' error'
+  if (messageType === 'warning') className += ' warning'
   return (
-    <div className="notification">
+    <div className={className}>
       {message}
     </div>
   )
@@ -84,6 +86,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [search, setSearch] = useState('')
   const [message, setMessage] = useState(null)
+  const [messageType, setMessageType] = useState('')
 
   const handleNameChange = (event) => setNewName(event.target.value)
   const handleNumberChange = (event) => setNewNumber(event.target.value)
@@ -100,7 +103,9 @@ const App = () => {
           setTimeout(() => {setMessage(null)}, 5000)
         })
         .catch(error => {
-          alert('Error deleting person')
+          setMessage(`${persons.find((person)=>person.id === id).name} has already been deleted from the server`)
+          setMessageType('error')
+          setTimeout(() => {setMessage(null); setMessageType('')}, 5000)
           console.error(error)
         })
     }
@@ -115,7 +120,9 @@ const App = () => {
         setTimeout(() => {setMessage(null)}, 5000)
       })
       .catch(error => {
-        alert('Error updating person')
+        setMessageType('error')
+        setMessage(`${newPerson.name} has already been removed from the server`)
+        setTimeout(() => {setMessage(null); setMessageType('')}, 5000)
         console.error(error)
       })
   }
@@ -123,7 +130,9 @@ const App = () => {
   const handleFormSubmit = (event) => {
     event.preventDefault()
     if (!newName.trim() || !newNumber.trim()) {
-      alert('Both name and number are required')
+      setMessageType('warning')
+      setMessage('Both name and number are required')
+      setTimeout(() => {setMessage(null); setMessageType('')}, 5000)
       return
     }
     if (persons.some(person => person.name === newName.trim()) && !persons.find(person => person.number === newNumber)) {
@@ -138,7 +147,9 @@ const App = () => {
     }
     if (persons.some(person => person.number === newNumber)) {
       const phoneHolder = persons.find(person => person.number === newNumber).name
-      alert(`${newNumber} is ${phoneHolder}'s phone number`)
+      setMessage(`${newNumber} is ${phoneHolder}'s phone number`)
+      setMessageType('warning')
+      setTimeout(() => {setMessage(null); setMessageType('')}, 5000)
       setNewNumber('')
       return
     }
@@ -163,7 +174,7 @@ const App = () => {
   return (
     <div className="container">
       <h1>Phonebook</h1>
-      <Message message={message}/>
+      <Message message={message} messageType={messageType}/>
       <Filter value={search} onChange={handleSearchChange} />
       <h2>Add a new</h2>
       <PersonForm
