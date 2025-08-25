@@ -61,7 +61,16 @@ const Persons = ({ persons, handleDelete }) => (
     </tbody>
   </table>
 )
-
+const Message = ({ message }) => {
+  if (message === null) {
+    return null
+  }
+  return (
+    <div className="notification">
+      {message}
+    </div>
+  )
+}
 const App = () => {
   const [persons, setPersons] = useState([])
   useEffect(()=>{
@@ -74,6 +83,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [search, setSearch] = useState('')
+  const [message, setMessage] = useState(null)
 
   const handleNameChange = (event) => setNewName(event.target.value)
   const handleNumberChange = (event) => setNewNumber(event.target.value)
@@ -86,6 +96,8 @@ const App = () => {
         .deletion(id)
         .then(() => {
           setPersons(persons.filter(person => person.id !== id))
+          setMessage(`${persons.find((person)=>person.id === id).name} deleted successfully`)
+          setTimeout(() => {setMessage(null)}, 5000)
         })
         .catch(error => {
           alert('Error deleting person')
@@ -99,6 +111,8 @@ const App = () => {
       .update(id, newPerson)
       .then(returnedPerson => {
         setPersons(persons.map(person => person.id !== id ? person : returnedPerson))
+        setMessage(`${returnedPerson.name}'s number updated successfully`)
+        setTimeout(() => {setMessage(null)}, 5000)
       })
       .catch(error => {
         alert('Error updating person')
@@ -135,6 +149,8 @@ const App = () => {
       setPersons(persons.concat(person))
       setNewName('')
       setNewNumber('')
+      setMessage(`${person.name} added successfully`)
+      setTimeout(() => {setMessage(null)}, 5000)
     }).catch(error => {
       console.error('Error adding person:', error)
     })
@@ -147,6 +163,7 @@ const App = () => {
   return (
     <div className="container">
       <h1>Phonebook</h1>
+      <Message message={message}/>
       <Filter value={search} onChange={handleSearchChange} />
       <h2>Add a new</h2>
       <PersonForm

@@ -20,6 +20,17 @@ body {
   justify-content: center;
   align-items: center;
 }
+
+.notification {
+  color: green;
+  background-color: #ddffdd;
+  font-size: 15px;
+  border: 2px solid green;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
 a {
   font-weight: 500;
   color: #646cff;
