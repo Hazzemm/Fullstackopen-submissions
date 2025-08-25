@@ -74,9 +74,17 @@ const App = () => {
     }
     const newId = Math.max(...persons.map(person => person.id)) + 1
     const newPerson = { name: newName, number: newNumber, id: newId }
-    setPersons([...persons, newPerson])
-    setNewName('')
-    setNewNumber('')
+    axios
+      .post('http://localhost:3001/persons', newPerson)
+      .then(response => {
+        console.log(response.data)
+        setPersons(persons.concat(response.data))
+        setNewName('')
+        setNewNumber('')
+      })
+      .catch(error => {
+        console.error('There was an error adding the person!', error)
+      })
   }
 
   const personsToShow = persons.filter(person =>
