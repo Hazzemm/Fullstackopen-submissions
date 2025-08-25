@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import personService from './services/persons'
+import './index.css'
 
 // Filter component
 const Filter = ({ value, onChange }) => (
@@ -18,15 +19,28 @@ const PersonForm = ({
   handleNumberChange
 }) => (
   <form onSubmit={onSubmit}>
-    <div>
-      name: <input value={newName} onChange={handleNameChange} />
-      <br />
-      phone: <input value={newNumber} onChange={handleNumberChange} />
-    </div>
-    <div>
-      <button type="submit">add</button>
-    </div>
-  </form>
+  <table>
+    <tbody>
+      <tr>
+        <td>name: </td>
+        <td>
+          <input value={newName} onChange={handleNameChange} />
+        </td>
+      </tr>
+      <tr>
+        <td>number: </td>
+        <td>
+          <input value={newNumber} onChange={handleNumberChange} />
+        </td>
+        <td></td>
+        <td></td>
+        <td>
+          <button type="submit">ADD</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</form>
 )
 
 
@@ -40,7 +54,7 @@ const Persons = ({ persons, handleDelete }) => (
           <td>{person.name}</td>
           <td>{person.number}</td>
           <td>
-            <button onClick={() => handleDelete(person.id)}>delete</button>
+            <button onClick={() => handleDelete(person.id)}>DELETE</button>
           </td>
         </tr>
       ))}
@@ -131,10 +145,10 @@ const App = () => {
   )
 
   return (
-    <div>
-      <h2>Phonebook</h2>
+    <div className="container">
+      <h1>Phonebook</h1>
       <Filter value={search} onChange={handleSearchChange} />
-      <h3>Add a new</h3>
+      <h2>Add a new</h2>
       <PersonForm
         onSubmit={handleFormSubmit}
         newName={newName}
@@ -142,7 +156,7 @@ const App = () => {
         newNumber={newNumber}
         handleNumberChange={handleNumberChange}
       />
-      <h3>Numbers</h3>
+      <h2>Numbers</h2>
       <Persons persons={personsToShow} handleDelete={handleDelete}/>
     </div>
   )
