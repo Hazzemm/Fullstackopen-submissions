@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import personService from './services/persons'
 
 // Filter component
 const Filter = ({ value, onChange }) => (
@@ -40,12 +41,11 @@ const Persons = ({ persons }) => (
 const App = () => {
   const [persons, setPersons] = useState([])
   useEffect(()=>{
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response=>{
-        console.log(response.data)
-        setPersons(response.data)
-      })
+    personService
+      .getAll()
+      .then(persons=>{
+      setPersons(persons)
+    })
   },[])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
@@ -74,17 +74,14 @@ const App = () => {
     }
     const newId = Math.max(...persons.map(person => person.id)) + 1
     const newPerson = { name: newName, number: newNumber, id: newId }
-    axios
-      .post('http://localhost:3001/persons', newPerson)
-      .then(response => {
-        console.log(response.data)
-        setPersons(persons.concat(response.data))
-        setNewName('')
-        setNewNumber('')
-      })
-      .catch(error => {
-        console.error('There was an error adding the person!', error)
-      })
+    personService
+      .create(newPerson).then(person => {
+      setPersons(persons.concat(person))
+      setNewName('')
+      setNewNumber('')
+    }).catch(error => {
+      console.error('Error adding person:', error)
+    })
   }
 
   const personsToShow = persons.filter(person =>
