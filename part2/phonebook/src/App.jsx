@@ -29,13 +29,23 @@ const PersonForm = ({
   </form>
 )
 
+
+
 // Persons component
-const Persons = ({ persons }) => (
-  <>
-    {persons.map(person => (
-      <div key={person.id}>{person.name} {person.number}</div>
-    ))}
-  </>
+const Persons = ({ persons, handleDelete }) => (
+  <table>
+    <tbody>
+      {persons.map(person => (
+        <tr key={person.id}>
+          <td>{person.name}</td>
+          <td>{person.number}</td>
+          <td>
+            <button onClick={() => handleDelete(person.id)}>delete</button>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
 )
 
 const App = () => {
@@ -55,6 +65,20 @@ const App = () => {
   const handleNumberChange = (event) => setNewNumber(event.target.value)
   const handleSearchChange = (event) => setSearch(event.target.value)
 
+  const handleDelete = (id) => {
+    if (window.confirm(`Delete ${persons.find((person)=>person.id === id).name}?`)) {
+      
+      personService
+        .deletion(id)
+        .then(() => {
+          setPersons(persons.filter(person => person.id !== id))
+        })
+        .catch(error => {
+          alert('Error deleting person')
+          console.error(error)
+        })
+    }
+  }
   const handleFormSubmit = (event) => {
     event.preventDefault()
     if (!newName.trim() || !newNumber.trim()) {
@@ -73,7 +97,7 @@ const App = () => {
       return
     }
     const newId = Math.max(...persons.map(person => person.id)) + 1
-    const newPerson = { name: newName, number: newNumber, id: newId }
+    const newPerson = { name: newName, number: newNumber, id: newId.toString() }
     personService
       .create(newPerson).then(person => {
       setPersons(persons.concat(person))
@@ -101,7 +125,7 @@ const App = () => {
         handleNumberChange={handleNumberChange}
       />
       <h3>Numbers</h3>
-      <Persons persons={personsToShow} />
+      <Persons persons={personsToShow} handleDelete={handleDelete}/>
     </div>
   )
 }
