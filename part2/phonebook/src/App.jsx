@@ -79,15 +79,33 @@ const App = () => {
         })
     }
   }
+
+  const handleUpdate = (id, newPerson) => {
+    personService
+      .update(id, newPerson)
+      .then(returnedPerson => {
+        setPersons(persons.map(person => person.id !== id ? person : returnedPerson))
+      })
+      .catch(error => {
+        alert('Error updating person')
+        console.error(error)
+      })
+  }
+
   const handleFormSubmit = (event) => {
     event.preventDefault()
     if (!newName.trim() || !newNumber.trim()) {
       alert('Both name and number are required')
       return
     }
-    if (persons.some(person => person.name === newName)) {
-      alert(`${newName} is already added to phonebook`)
-      setNewName('')
+    if (persons.some(person => person.name === newName.trim()) && !persons.find(person => person.number === newNumber)) {
+      if (window.confirm(`${newName.trim()} is already added to phonebook, replace the old number with a new one?`)) {
+        const personToUpdate = persons.find(person => person.name === newName.trim())
+        const updatedPerson = { ...personToUpdate, number: newNumber }
+        handleUpdate(personToUpdate.id, updatedPerson)
+        setNewName('')
+        setNewNumber('')
+      }
       return
     }
     if (persons.some(person => person.number === newNumber)) {
@@ -97,7 +115,7 @@ const App = () => {
       return
     }
     const newId = Math.max(...persons.map(person => person.id)) + 1
-    const newPerson = { name: newName, number: newNumber, id: newId.toString() }
+    const newPerson = { name: newName.trim(), number: newNumber, id: newId.toString() }
     personService
       .create(newPerson).then(person => {
       setPersons(persons.concat(person))
