@@ -1,12 +1,57 @@
-# React + Vite
+# Country Search App 🌍
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple React training project that allows users to search for countries and view detailed information about them.  
+It fetches real-time country data from the **REST Countries API**.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
+- 🔎 Search countries by name (case-insensitive).
+- 📋 List of countries when there are 2–10 matches.
+- ⚠️ Warning message when there are more than 10 matches.
+- 📖 Detailed information (capital, area, languages, and flag) when only one country matches.
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Tech Stack
+- **React** (useState, useEffect)
+- **Axios** (for fetching data)
+- **REST Countries API** → [https://studies.cs.helsinki.fi/restcountries/api/all](https://studies.cs.helsinki.fi/restcountries/api/all)
+
+---
+
+## How It Works
+1. User types in the search input.  
+2. Countries are filtered by name from the API data.  
+3. Display logic:
+   - More than 10 matches → show a message:  
+     *“Too many matches, specify another filter.”*
+   - Exactly 1 match → show **country details**:
+     - Name
+     - Capital
+     - Area
+     - Languages
+     - Flag
+   - 2–10 matches → show a simple list of country names.
+
+## In Action
+Here’s how the app works in action 👇
+
+![Demo GIF](./assets/demo.gif)
+
+---
+
+## Installation & Setup
+1. Clone the repo:
+   ```bash
+   git clone https://github.com/your-username/country-search-app.git
+2. Navigate into the project:
+   ```bash
+   cd country-search-app
+3. Install dependencies:
+   ```bash
+   npm install
+4. Run the development server:
+   ```bash
+   npm start
+
