@@ -17,10 +17,11 @@ It fetches real-time country data from the **REST Countries API**.
 - **React** (useState, useEffect)
 - **Axios** (for fetching data)
 - **REST Countries API** → [https://studies.cs.helsinki.fi/restcountries/api/all](https://studies.cs.helsinki.fi/restcountries/api/all)
+- **REST Weather API** → [https://openweathermap.org/](https://openweathermap.org/)
 
 
 ## Demo
-Here’s how the app works in action 👇
+Here’s how the app works in action 
 
 ![Demo GIF](./assets/demo.gif)
 
@@ -37,6 +38,7 @@ Here’s how the app works in action 👇
      - Area
      - Languages
      - Flag
+     - Weather
    - 2–10 matches → show a simple list of country names.
 
 
@@ -53,4 +55,7 @@ Here’s how the app works in action 👇
 4. Run the development server:
    ```bash
    npm run dev
+
+### 🔑 Environment Variables
+Don’t forget to create a `.env` file in the root directory and add your own **API keys** (e.g., OpenWeather API key) before running the project.
 
