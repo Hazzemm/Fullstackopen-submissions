@@ -43,10 +43,10 @@ Here’s how the app works in action 👇
 ## Installation & Setup
 1. Clone the repo:
    ```bash
-   git clone https://github.com/your-username/country-search-app.git
+   git clone https://github.com/Hazzemm/Fullstackopen-submissions.git
 2. Navigate into the project:
    ```bash
-   cd countries
+   cd Fullstackopen-submissions/part2/countries
 3. Install dependencies:
    ```bash
    npm install
