@@ -16,6 +16,10 @@ app.get('/api/persons', (req, res) => {
     res.json(persons);
 });
 
+app.get('/info',(req,res)=>{
+    res.send(`Phonebook has info for ${persons.length} people <br> ${new Date()}`)
+})
+
 app.listen(3001, () => {
     console.log('Server is running on http://localhost:3000');
 });
