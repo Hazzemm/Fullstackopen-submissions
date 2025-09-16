@@ -2,6 +2,9 @@ const express = require('express');
 const app = express();
 const port = 3001;
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 const persons = [
     { id: 1, name: 'Arto Hellas', number: '040-123456' },
     { id: 2, name: 'Ada Lovelace', number: '39-44-5323523' },
@@ -14,7 +17,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/api/persons', (req, res) => {
-    res.json(persons);
+    res.json(persons).status(200);
 });
 
 app.get('/info',(req,res)=>{
@@ -25,7 +28,7 @@ app.get('/api/persons/:id', (req, res) => {
     const personId = +req.params.id
     const person = persons.find(p=>p.id === personId)
     if(person){
-        res.send(person)
+        res.send(person).status(200)
     } else {
         res
             .send(`<h1>404</h1> <p>person with id: ${personId} is not found</p>`).status(404).end()
@@ -42,6 +45,27 @@ app.delete('/api/persons/:id',(req,res)=>{
         res
             .send(`<h1>404</h1> <p>person with id: ${personId} is not found</p>`).status(404).end()
     }
+})
+
+app.post('/api/persons',(req,res)=>{
+    const body = req.body
+    if(!body.name || !body.number){
+        return res.status(400).json({
+            error: 'name or number is missing'
+        })
+    }
+    if(persons.find(p=>p.name === body.name)){
+        return res.json({
+            error: 'name must be unique'
+        }).status(400)
+    }
+    const newPerson = {
+        id: Math.floor(Math.random()*10000),
+        name: body.name,
+        number: body.number
+    }
+    persons.push(newPerson)
+    res.send(newPerson).status(201)
 })
 
 app.listen(port, () => {
