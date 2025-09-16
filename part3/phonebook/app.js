@@ -31,6 +31,18 @@ app.get('/api/persons/:id', (req, res) => {
     }
 });
 
+app.delete('/api/persons/:id',(req,res)=>{
+    const personId = +req.params.id
+    const personIndex = persons.findIndex(p=>p.id === personId)
+    if(personIndex !== -1){
+        persons.splice(personIndex,1)
+        res.status(204).end()
+    } else {
+        res
+            .send(`<h1>404</h1> <p>person with id: ${personId} is not found</p>`).status(404).end()
+    }
+})
+
 app.listen(3001, () => {
     console.log('Server is running on http://localhost:3000');
 });
