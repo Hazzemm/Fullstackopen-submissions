@@ -5,7 +5,9 @@ const morgan = require('morgan');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(morgan('tiny'));
+
+morgan.token('body', (req) => JSON.stringify(req.body));
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'));
 
 const persons = [
     { id: 1, name: 'Arto Hellas', number: '040-123456' },
@@ -19,7 +21,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/api/persons', (req, res) => {
-    res.json(persons).status(200);
+    res.status(200).json(persons);
 });
 
 app.get('/info',(req,res)=>{
@@ -30,10 +32,9 @@ app.get('/api/persons/:id', (req, res) => {
     const personId = +req.params.id
     const person = persons.find(p=>p.id === personId)
     if(person){
-        res.send(person).status(200)
+        res.status(200).send(person)
     } else {
-        res
-            .send(`<h1>404</h1> <p>person with id: ${personId} is not found</p>`).status(404).end()
+        res.status(404).send(`<h1>404</h1> <p>person with id: ${personId} is not found</p>`)
     }
 });
 
@@ -44,8 +45,7 @@ app.delete('/api/persons/:id',(req,res)=>{
         persons.splice(personIndex,1)
         res.status(204).end()
     } else {
-        res
-            .send(`<h1>404</h1> <p>person with id: ${personId} is not found</p>`).status(404).end()
+        res.status(404).send(`<h1>404</h1> <p>person with id: ${personId} is not found</p>`)
     }
 })
 
@@ -57,9 +57,9 @@ app.post('/api/persons',(req,res)=>{
         })
     }
     if(persons.find(p=>p.name === body.name)){
-        return res.json({
+        return res.status(400).json({
             error: 'name must be unique'
-        }).status(400)
+        })
     }
     const newPerson = {
         id: Math.floor(Math.random()*10000),
@@ -67,7 +67,7 @@ app.post('/api/persons',(req,res)=>{
         number: body.number
     }
     persons.push(newPerson)
-    res.send(newPerson).status(201)
+    res.status(201).send(newPerson)
 })
 
 const unknownEndpoint = (req, res) => {
