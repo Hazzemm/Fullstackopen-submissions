@@ -1,9 +1,11 @@
 const express = require('express');
 const app = express();
 const port = 3001;
+const morgan = require('morgan');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(morgan('tiny'));
 
 const persons = [
     { id: 1, name: 'Arto Hellas', number: '040-123456' },
@@ -68,6 +70,14 @@ app.post('/api/persons',(req,res)=>{
     res.send(newPerson).status(201)
 })
 
+const unknownEndpoint = (req, res) => {
+  res.status(404).send({ error: 'unknown endpoint' })
+}
+
+app.use(unknownEndpoint)
+
 app.listen(port, () => {
     console.log(`Server is running on localhost:${port}`);
 });
+
+
