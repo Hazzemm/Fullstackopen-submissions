@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const port = 3001;
 
 const persons = [
     { id: 1, name: 'Arto Hellas', number: '040-123456' },
@@ -9,7 +10,7 @@ const persons = [
 ];
 
 app.get('/', (req, res) => {
-  response.send('<h1>Hello World!</h1>')
+  res.send('<h1>Hello World!</h1>')
 })
 
 app.get('/api/persons', (req, res) => {
@@ -43,6 +44,6 @@ app.delete('/api/persons/:id',(req,res)=>{
     }
 })
 
-app.listen(3001, () => {
-    console.log('Server is running on http://localhost:3000');
+app.listen(port, () => {
+    console.log(`Server is running on localhost:${port}`);
 });
